@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0c0d45">
+  <meta name="description" content="Библиотека учебных игр — три волшебных приключения для учеников 4 класса.">
+  <title>Библиотека игр — мир знаний и приключений</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;600;700;800&family=Marck+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+  <a class="skip-link" href="#games">Перейти к играм</a>
+  <div class="sky" aria-hidden="true"><div class="stars"></div></div>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Библиотека игр, на главную">
+      <span class="brand__mark" aria-hidden="true"><i></i><b></b><span>✦</span></span>
+      <span><strong>Библиотека игр</strong><small>Мир знаний и приключений</small></span>
+    </a>
+    <nav aria-label="Основная навигация">
+      <a class="nav-link active" href="#top">Главная</a><a class="nav-link" href="#games">Игры</a>
+    </nav>
+    <button class="sound-toggle" type="button" aria-label="Выключить звуки" aria-pressed="true"><span aria-hidden="true">🔊</span></button>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="author-name">
+      <p class="eyebrow">Авторская коллекция учебных приключений</p>
+      <h1 id="author-name">Margarita Lebedeva</h1>
+      <div class="signature-flourish" aria-hidden="true"><i></i><b>✦</b><i></i></div>
+      <div class="mission-scroll">
+        <span class="scroll-key scroll-key--left" aria-hidden="true">⚿</span>
+        <div><p class="scroll-kicker">Твоя новая глава</p><h2>Волшебная миссия начинается!</h2>
+          <p>Пройди 3 испытания, собери ключи знаний<br>и стань героем Библиотеки игр!</p></div>
+        <span class="scroll-key scroll-key--right" aria-hidden="true">⚿</span>
+      </div>
+      <p class="hero-note">Три игры. Три приключения. Новые знания!</p>
+    </section>
+
+    <section class="games-section" id="games" aria-labelledby="games-title">
+      <div class="section-heading"><span>✦</span><div><p>Выбери свой портал</p><h2 id="games-title">Три мира знаний</h2></div><span>✦</span></div>
+      <div class="game-grid">
+        <article class="game-card game-card--math" style="--delay: .08s">
+          <span class="card-sigil" aria-hidden="true">✧</span>
+          <div class="card-art">
+            <img src="assets/cards/math-card.png" alt="Волшебный математический портал с числами и сияющими кристаллами">
+          </div>
+          <div class="card-body"><p class="subject">МАТЕМАТИКА</p><h3>Считай &amp; Собирай</h3><p>Собирай кристаллы, решай задачи<br>и открой портал чисел!</p>
+            <div class="card-actions"><a class="button button--primary" href="games/math.html" data-game="math" data-href="games/math.html">Играть <span>→</span></a><button class="button button--ghost rules-button" data-game="math">Как играть</button></div></div>
+        </article>
+
+        <article class="game-card game-card--russian" style="--delay: .18s">
+          <span class="card-sigil" aria-hidden="true">✦</span>
+          <div class="card-art">
+            <img src="assets/cards/russian-card.png" alt="Волшебная книга, золотые буквы и перо в академии русского языка">
+          </div>
+          <div class="card-body"><p class="subject">РУССКИЙ ЯЗЫК</p><h3>ОрфоБластер</h3><p>Раскрой тайны слов<br>и стань мастером языка!</p>
+            <div class="card-actions"><a class="button button--primary" href="games/russian.html" data-game="russian" data-href="games/russian.html">Играть <span>→</span></a><button class="button button--ghost rules-button" data-game="russian">Как играть</button></div></div>
+        </article>
+
+        <article class="game-card game-card--world" style="--delay: .28s">
+          <span class="card-sigil" aria-hidden="true">✺</span>
+          <div class="card-art">
+            <img src="assets/cards/world-card.png" alt="Волшебный мир исследователя с глобусом, компасом, горами и водопадами">
+          </div>
+          <div class="card-body"><p class="subject">ОКРУЖАЮЩИЙ МИР</p><h3>Большая экспедиция</h3><p>Исследуй природу,<br>путешествуй и совершай открытия!</p>
+            <div class="card-actions"><a class="button button--primary" href="games/world.html" data-game="world" data-href="games/world.html">Играть <span>→</span></a><button class="button button--ghost rules-button" data-game="world">Как играть</button></div></div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="footer-motto"><span aria-hidden="true">✥</span><p>Знания — это приключение, которое никогда не заканчивается!</p><span aria-hidden="true">✦</span></div></footer>
+
+  <div class="magic-cursor" aria-hidden="true"><span></span></div>
+  <div class="portal-transition" aria-hidden="true">
+    <div class="transition-portal"><i></i><i></i><i></i><div class="transition-particles"></div></div>
+    <div class="transition-message"><strong></strong><small></small></div>
+  </div>
+
+  <dialog class="rules-modal" aria-labelledby="modal-title">
+    <div class="modal-glow" aria-hidden="true"></div>
+    <button class="modal-close" type="button" aria-label="Закрыть окно">×</button>
+    <span class="modal-icon" aria-hidden="true">✦</span><p class="modal-label">Правила приключения</p>
+    <h2 id="modal-title"></h2><div class="modal-copy"></div>
+    <button class="button button--primary modal-done" type="button">Всё понятно!</button>
+  </dialog>
+  <script src="js/main.js"></script>
+</body>
+</html>

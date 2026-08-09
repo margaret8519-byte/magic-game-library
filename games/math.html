@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#075bb5">
+  <title>Считай &amp; Собирай — Библиотека игр</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="math.css"><link rel="stylesheet" href="../css/magic-transition.css">
+</head>
+<body>
+  <div class="game-sky" aria-hidden="true"><div class="number-portal"><span>8</span><i>2</i><b>7</b></div></div>
+  <header class="game-header">
+    <a class="fantasy-button back-link" href="../index.html#games"><span aria-hidden="true">←</span> В библиотеку</a>
+    <div class="game-title"><p>Математическое приключение</p><h1>Считай &amp; Собирай</h1><span>Открой портал чисел!</span></div>
+    <div class="header-actions">
+      <button class="round-button sound-button" type="button" aria-label="Выключить звук" aria-pressed="true">🔊</button>
+      <button class="fantasy-button help-button" type="button"><span aria-hidden="true">?</span> Как играть</button>
+    </div>
+  </header>
+
+  <main class="game-shell">
+    <section class="hud" aria-label="Статистика игры">
+      <div class="hud-item"><span>Очки</span><strong id="score">0</strong></div>
+      <div class="hud-item"><span>Испытания</span><strong id="trials">1 / 8</strong></div>
+      <div class="hud-item hud-keys"><span>Энергия</span><strong><i aria-hidden="true">◇</i> <b id="keys">0</b> / 8</strong></div>
+      <div class="hud-item"><span>Комбо</span><strong id="combo">×1</strong></div>
+    </section>
+    <div class="trial-path" id="trial-path" aria-label="Путь из восьми испытаний"></div>
+
+    <div class="game-layout">
+      <aside class="goal-column">
+       <section class="portal-goal panel" aria-labelledby="portal-goal-title">
+        <h2 id="portal-goal-title">Кристалл<br>портала</h2>
+        <div class="portal-crystal" id="portal-crystal" aria-hidden="true"><i></i><b></b><span></span></div>
+        <p>Энергия <strong id="energy-count">0 / 8</strong></p>
+       </section>
+       <section class="boosters panel" aria-labelledby="boosters-title">
+        <h2 id="boosters-title">Бустеры</h2>
+        <div class="booster-list">
+          <button class="booster" type="button" data-booster="hammer" aria-label="Молот: убрать одну фишку"><span>🔨</span><b>3</b><small>Молот</small></button>
+          <button class="booster" type="button" data-booster="shuffle" aria-label="Перемешать поле"><span>✥</span><b>2</b><small>Микс</small></button>
+          <button class="booster" type="button" data-booster="star" aria-label="Звезда: убрать все фишки выбранного цвета"><span>✦</span><b>1</b><small>Звезда</small></button>
+        </div>
+       </section>
+      </aside>
+
+      <section class="board-panel" aria-label="Игровое поле Считай и Собирай">
+        <div class="turn-status" id="turn-status" aria-live="polite">✨ Сначала пройди математическое испытание</div>
+        <div class="charged-badge" id="charged-badge" aria-hidden="true">×2 ЗАРЯЖЕННЫЙ ХОД</div>
+        <div class="board-frame"><div class="game-board" id="game-board" role="grid" aria-label="Поле 8 на 8"></div></div>
+        <div class="combo-pop" id="combo-pop" aria-hidden="true"></div>
+        <p class="game-status" id="game-status" aria-live="polite">Собери три одинаковых кристалла в ряд</p>
+      </section>
+
+      <aside class="challenge panel" aria-labelledby="challenge-title">
+        <span class="scroll-cap scroll-cap--top" aria-hidden="true"></span>
+        <h2 id="challenge-title">Математический<br>вызов</h2>
+        <div class="challenge-rule" aria-hidden="true">◆</div>
+        <p id="question">Какое число больше?</p>
+        <div class="answers" id="answers"></div>
+        <div class="challenge-timer" aria-label="Вопрос номер"><span id="question-number">1</span></div>
+        <span class="scroll-cap scroll-cap--bottom" aria-hidden="true"></span>
+      </aside>
+    </div>
+  </main>
+
+  <dialog class="game-dialog help-dialog" aria-labelledby="help-title">
+    <button class="dialog-close" type="button" aria-label="Закрыть">×</button>
+    <span class="dialog-gem" aria-hidden="true">◆</span><h2 id="help-title">Как играть</h2>
+    <p>Сначала реши математическое испытание — оно откроет один магический ход на поле.</p>
+    <p>Меняй соседние кристаллы и собирай линии из трёх и более. Неудачная перестановка не расходует ход, а комбинации из четырёх и пяти создают особые фишки.</p>
+    <button class="fantasy-button dialog-action" type="button">Начать приключение</button>
+  </dialog>
+
+  <dialog class="game-dialog result-dialog" aria-labelledby="result-title">
+    <div class="reward-crystal" id="reward-crystal" aria-hidden="true"><i></i></div><h2 id="result-title"></h2><p id="result-copy"></p>
+    <dl class="result-stats"><div><dt>Верных ответов</dt><dd id="result-correct">0 / 8</dd></div><div><dt>Очки</dt><dd id="result-score">0</dd></div><div><dt>Лучшее комбо</dt><dd id="result-combo">×1</dd></div></dl>
+    <p class="reward-name" id="reward-name"></p><p class="shard-count" id="shard-count"></p>
+    <button class="fantasy-button replay-button" type="button">Новое приключение</button>
+    <a class="fantasy-button secondary" href="../index.html#games">В библиотеку</a>
+  </dialog>
+  <dialog class="game-dialog guardian-dialog" aria-labelledby="guardian-title">
+    <p class="awakening-label">Кристалл пробуждается...</p>
+    <div class="guardian-stage" aria-hidden="true">
+      <div class="guardian-crystal"><i></i><b></b></div>
+      <div class="numi-placeholder"><span class="dragon-horns"></span><i class="dragon-head"><b></b><b></b></i><i class="dragon-body"><b></b></i><span class="dragon-wings"></span><em>◆</em></div>
+    </div>
+    <p class="guardian-kicker">Новый хранитель открыт!</p><h2 id="guardian-title">Нумми</h2><h3>Кристальный дракончик · Хранитель Чисел</h3>
+    <p>Нумми будет хранить знания,<br>которые ты открыл сегодня.</p>
+    <button class="fantasy-button guardian-continue" type="button">Продолжить приключение</button>
+    <a class="fantasy-button secondary" href="../index.html#games">В библиотеку</a>
+  </dialog>
+  <script src="../js/adventure-music.js"></script><script src="../js/magic-transition.js"></script><script src="math.js"></script>
+</body>
+</html>

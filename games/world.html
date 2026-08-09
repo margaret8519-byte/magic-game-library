@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#082f45">
+  <title>Большая экспедиция: Тайна Атласа</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/world.css"><link rel="stylesheet" href="../css/magic-transition.css">
+</head>
+<body>
+  <div class="world-sky" aria-hidden="true"><i></i><i></i><i></i></div>
+  <section class="intro-screen waiting" id="world-intro" aria-label="Вступительный трейлер игры"><video id="world-intro-video" muted playsinline preload="metadata"><source src="../assets/video/world-intro.mp4" type="video/mp4"></video><div class="intro-shade" aria-hidden="true"></div><div class="intro-title"><small>Окружающий мир · 4 класс</small><h2>Большая экспедиция</h2><p>Тайна Атласа</p><button class="world-button primary intro-start" type="button">▶ Начать приключение</button></div><button class="world-button secondary intro-skip" type="button">Пропустить</button></section>
+  <header class="world-header"><a class="world-button secondary" href="../index.html#games">← В библиотеку</a><div><small>Окружающий мир · 4 класс</small><h1>Большая экспедиция</h1><p>Тайна Атласа</p></div><div class="header-actions"><button class="icon-button sound-toggle" type="button" aria-label="Выключить звук" aria-pressed="true">🔊</button><button class="world-button secondary album-button" type="button">Альбом экспедиций</button></div></header>
+
+  <main>
+    <section class="map-screen" id="map-screen" aria-labelledby="map-title">
+      <div class="map-heading"><div><span>Великий Атлас потерял четыре страницы</span><h2 id="map-title">Карта экспедиций</h2></div><div class="fragment-counter"><i>✦</i><strong id="fragment-count">0</strong><span>Фрагментов карты</span></div></div>
+      <div class="expedition-map"><svg class="route-lines" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true"><path d="M220 190 C390 80 560 105 725 190 S630 430 790 460 M220 190 C140 330 210 470 390 465 C535 460 620 420 790 460"/></svg><div class="territories" id="territories"></div><aside class="atlas-message"><strong>Великий Атлас</strong><p>Верни четыре страницы знаний и открой Хранителя Мира!</p><div class="guardian-slot" id="guardian-slot"><span>?</span><b>Хранитель Мира</b></div></aside></div>
+      <div class="map-actions"><button class="world-button primary new-adventure" type="button">Новое приключение</button><button class="world-button secondary watch-trailer" type="button">▶ Смотреть трейлер</button><button class="text-button reset-progress" type="button">Сбросить весь прогресс</button></div>
+    </section>
+
+    <section class="mission-screen hidden" id="mission-screen" aria-labelledby="mission-question">
+      <div class="mission-top"><button class="world-button secondary return-map" type="button">← На карту</button><div class="mission-location"><span id="mission-level">Экспедиция 1</span><strong id="mission-name">Россия на карте</strong><small id="mission-count">Миссия 1 из 10 · Общий путь 1 / 40</small></div><div class="mission-score"><span>Очки</span><strong id="mission-score">0</strong></div></div>
+      <div class="mission-card"><div class="mission-art"><img id="mission-image" src="../assets/world-levels/level-1-russia.png" alt=""><span class="mechanic-label" id="mechanic-label"></span></div><div class="mission-content"><p class="mission-kicker">Задание экспедиции</p><h2 id="mission-question"></h2><p class="mission-instruction" id="mission-instruction"></p><div class="interaction-zone" id="interaction-zone"></div><div class="mission-feedback" id="mission-feedback" aria-live="polite"></div><button class="world-button primary continue-mission" type="button" hidden>Продолжить экспедицию</button></div></div>
+    </section>
+  </main>
+
+  <dialog class="world-dialog reward-dialog" aria-labelledby="reward-title"><div class="reward-burst" aria-hidden="true"></div><p class="reward-returned">Страница Атласа возвращена!</p><h2 id="reward-title">Экспедиция завершена!</h2><h3>Твоя награда</h3><div class="reward-collectibles"><article class="postcard-prize"><img id="reward-postcard" src="../assets/world-levels/level-1-russia.png" alt="Коллекционная открытка экспедиции"><strong id="postcard-name"></strong></article><article class="medal-prize"><span class="medal-aura" aria-hidden="true"></span><img id="reward-medal" src="../assets/world-rewards/medal-cartographer.png" alt="Медаль экспедиции"><strong id="medal-name"></strong></article></div><div class="reward-stats"><span>Верных открытий <b id="reward-correct">0 / 10</b></span><span>Очки <b id="reward-score">0</b></span></div><p id="reward-copy"></p><button class="world-button primary reward-continue" type="button">Продолжить путь</button></dialog>
+  <dialog class="world-dialog album-dialog" aria-labelledby="album-title"><button class="dialog-close album-close" type="button" aria-label="Закрыть">×</button><h2 id="album-title">Альбом экспедиций</h2><div class="album-grid" id="album-grid"></div></dialog>
+  <dialog class="world-dialog guardian-dialog" aria-labelledby="guardian-title"><p>Атлас пробуждается...</p><div class="guardian-reveal"><img hidden data-src="../assets/world-rewards/atlas-guardian.png" alt="Атлас — Хранитель Мира"><span>🦉</span></div><h2 id="guardian-title">Атлас</h2><h3>Хранитель Мира</h3><p>Волшебный филин-путешественник будет хранить открытые тобой тайны.</p><button class="world-button primary guardian-continue" type="button">Добавить в альбом</button></dialog>
+  <dialog class="world-dialog reset-dialog" aria-labelledby="reset-title"><h2 id="reset-title">Сбросить весь прогресс?</h2><p>Награды, результаты и история приключений будут удалены. Это действие нельзя отменить.</p><button class="world-button danger confirm-reset" type="button">Да, сбросить</button><button class="world-button secondary cancel-reset" type="button">Отмена</button></dialog>
+
+  <script src="../js/adventure-music.js"></script><script src="../js/magic-transition.js"></script><script src="world-data.js"></script><script src="world-curriculum.js"></script><script src="world-generators.js"></script><script src="world.js"></script>
+</body>
+</html>
