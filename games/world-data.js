@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const f=(id,level,category,subtopic,prompt,correct,wrong,explanation,mechanics)=>({id,level,category,subtopic,prompt,correct,wrong,explanation,mechanics});
+  const f=(id,level,category,subtopic,prompt,correct,wrong,explanation,mechanics,image=null,imageAlt='')=>({id,level,category,subtopic,prompt,correct,wrong,explanation,mechanics,image,imageAlt});
   const facts=[
     f('constitution',1,'society','constitution','Как называется основной закон Российской Федерации?','Конституция Российской Федерации',['Уголовный кодекс','Географический атлас'],'Конституция — основной закон страны.',['situation-choice','matching']),
     f('rights',1,'society','rights','Что относится к правам гражданина?','Получать образование',['Беречь природу только по желанию','Нарушать законы'],'Право на образование закреплено Конституцией.',['classification','situation-choice']),
@@ -176,5 +176,34 @@
     e('clean-air-actions',4,'ecology','air_protection','Какое действие помогает сохранять чистоту воздуха?','Чаще пользоваться общественным транспортом вместо личного автомобиля',['Сжигать листья во дворе','Оставлять двигатель работать без необходимости'],'Сокращение лишних выбросов улучшает качество воздуха.',['cause-effect']),
     e('first-aid-call',4,'safety','first_aid','Что должен сделать ребёнок, увидев человека, которому стало плохо?','Позвать взрослого и вызвать помощь по номеру 112',['Дать неизвестное лекарство','Уйти и никому не говорить'],'Безопасная первая помощь начинается с вызова взрослых и специалистов.',['situation-choice'])
   );
-  window.WORLD_DATA=Object.freeze({facts:Object.freeze(facts),levelNames:['Россия на карте','Машина времени','Планета чудес','Миссия спасателей'],levelImages:['level-1-russia.png','level-2-history.png','level-3-nature.png','level-4-safety.png']});
+  const missionImages={
+    'capital':['russia-moscow-map.png','Карта России с отмеченной золотой звездой Москвой'],
+    'federal-map':['russia-regions-map.png','Политико-административная карта России с границами регионов'],
+    'coat-arms':['russia-coat-of-arms.png','Государственный герб России с золотым двуглавым орлом'],
+    'moscow-map':['moscow-european-russia-map.png','Карта европейской части России с отмеченной Москвой'],
+    'map-scale':['map-scale.png','Карта с двумя точками и линейкой масштаба'],
+    'russia-borders':['russia-state-border.png','Карта России с выделенной государственной границей'],
+    'moscow-landmarks':['moscow-red-square.png','Красная площадь и собор Василия Блаженного в Москве'],
+    'kremlin':['moscow-kremlin.png','Башни и стены Московского Кремля'],
+    'historical-map':['historical-map.png','Старинная историческая карта с маршрутами и поселениями'],
+    'kizhi':['kizhi-wooden-churches.png','Деревянные храмы архитектурного ансамбля Кижи'],
+    'historical-work':['ancient-work-tools.png','Старинные орудия труда и предметы быта'],
+    'novgorod-source':['birch-bark-letter.png','Древняя берестяная грамота с письменами'],
+    'map-legend':['historical-map-legend.png','Историческая карта с условными обозначениями в легенде'],
+    'experiment':['plant-experiment.png','Школьники сравнивают растения в учебном опыте'],
+    'baikal':['lake-baikal.png','Чистые глубокие воды озера Байкал среди гор'],
+    'kamchatka':['kamchatka-volcano.png','Действующий вулкан Камчатки'],
+    'nature-rules':['nature-protection-rules.png','Дети убирают мусор и бережно наблюдают за животными'],
+    'earth-planet':['earth-from-space.png','Планета Земля, освещённая Солнцем в космосе'],
+    'plain':['broad-plain.png','Широкая равнина с небольшими перепадами высоты'],
+    'swamp':['natural-swamp.png','Болото с мелководьем, мхом и влаголюбивыми растениями'],
+    'wrangel':['wrangel-island.png','Арктическое побережье острова Врангеля с белым медведем'],
+    'lena-pillars':['lena-pillars.png','Высокие скальные образования Ленские столбы вдоль реки'],
+    'internet-source':['verify-online-source.png','Ученик сравнивает сообщение в Интернете с надёжными источниками'],
+    'road-marking':['pedestrian-crossing.png','Пешеходный переход зебра и светофор на городской улице'],
+    'suspicious-link':['suspicious-link.png','Подозрительная ссылка на экране компьютера со знаком предупреждения'],
+    'respect-dialogue':['respectful-dialogue.png','Школьники спокойно разговаривают и внимательно слушают друг друга']
+  };
+  facts.forEach(fact=>{const visual=missionImages[fact.id];if(visual){fact.image=visual[0];fact.imageAlt=visual[1]}});
+  window.WORLD_DATA=Object.freeze({facts:Object.freeze(facts.map(Object.freeze)),levelNames:['Россия на карте','Машина времени','Планета чудес','Миссия спасателей'],levelImages:['level-1-russia.png','level-2-history.png','level-3-nature.png','level-4-safety.png']});
 })();

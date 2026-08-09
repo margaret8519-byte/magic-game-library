@@ -1,18 +1,18 @@
 (() => {
   'use strict';
-  const WORLD_CONTENT_VERSION=3;
+  const WORLD_CONTENT_VERSION=4;
   const read=(key,fallback)=>{try{const raw=localStorage.getItem(key);return raw===null?fallback:JSON.parse(raw)}catch(_){return fallback}};
   const write=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value))}catch(_){}};
   const hash=value=>{let result=2166136261;for(const char of String(value)){result^=char.charCodeAt(0);result=Math.imul(result,16777619)}return(result>>>0).toString(36)};
   const unique=values=>[...new Set(values)];
+  const imageRequiredMechanics=new Set(['image-mission','hotspot','map-select','find-the-mistake']);
   const setFrom=(key,fallback=[])=>new Set(read(key,fallback));
   function normalizeWorldQuestion(text){return String(text||'').toLocaleLowerCase('ru-RU').replace(/\b(российская федерация|рф)\b/g,'россия').replace(/[.,!?;:«»“”„()—–-]/g,' ').replace(/\s+/g,' ').trim()}
   function shuffle(values){const result=[...values];for(let index=result.length-1;index>0;index-=1){const target=Math.floor(Math.random()*(index+1));[result[index],result[target]]=[result[target],result[index]]}return result}
   function payloadFor(task){const ordered=task.answer.includes('→')?task.answer.split('→').map(item=>item.trim()):[];if(['drag-sort','timeline','sequence'].includes(task.mechanic)&&ordered.length>1)return{mode:'order',items:shuffle(ordered),correctOrder:ordered};if(['classification','drag-to-scene'].includes(task.mechanic))return{mode:'classify',item:task.answer,buckets:['Подходит','Не подходит'],correctBucket:'Подходит'};if(['matching','cause-effect'].includes(task.mechanic))return{mode:'match',options:shuffle(task.answers),correct:task.answer};return{mode:'choice',options:shuffle(task.answers),correct:task.answer}}
   function taskFromFact(fact){
     const mechanic=fact.mechanics[0],conceptKey=`${fact.category}.${fact.subtopic}.${fact.id}`,taskKey=`${conceptKey}.001`,answers=[fact.correct,...fact.wrong];
-    const mapImages={1:'../assets/world-levels/level-1-russia.png',2:'../assets/world-levels/level-2-history.png',3:'../assets/world-levels/level-3-nature.png',4:'../assets/world-levels/level-4-safety.png'};
-    const task={id:`world-${fact.id}`,taskKey,conceptKey,category:fact.category,subtopic:fact.subtopic,levelGroup:fact.level,learningObjective:`Проверить знание: ${fact.subtopic.replaceAll('_',' ')}`,requiredAction:mechanic,mechanic,difficulty:fact.level,entityId:fact.id,mainEntityId:fact.id,additionalEntityIds:[],templateId:'curated',templateFamily:'curated',relationType:fact.subtopic,question:fact.prompt,instruction:['drag-sort','timeline','sequence'].includes(mechanic)?'Расположи элементы в правильном порядке.':['matching','cause-effect'].includes(mechanic)?'Найди верное соответствие.':['classification','drag-to-scene'].includes(mechanic)?'Выбери подходящую группу.':'Выбери правильный ответ.',answer:fact.correct,correct:fact.correct,answers,explanation:fact.explanation,image:mechanic==='map-select'?mapImages[fact.level]:null,imageId:mechanic==='map-select'?`expedition-map-${fact.level}`:null};
+    const task={id:`world-${fact.id}`,taskKey,conceptKey,category:fact.category,subtopic:fact.subtopic,levelGroup:fact.level,learningObjective:`Проверить знание: ${fact.subtopic.replaceAll('_',' ')}`,requiredAction:mechanic,mechanic,difficulty:fact.level,entityId:fact.id,mainEntityId:fact.id,additionalEntityIds:[],templateId:'curated',templateFamily:'curated',relationType:fact.subtopic,question:fact.prompt,instruction:['drag-sort','timeline','sequence'].includes(mechanic)?'Расположи элементы в правильном порядке.':['matching','cause-effect'].includes(mechanic)?'Найди верное соответствие.':['classification','drag-to-scene'].includes(mechanic)?'Выбери подходящую группу.':'Выбери правильный ответ.',answer:fact.correct,correct:fact.correct,answers,explanation:fact.explanation,image:fact.image?`../assets/world-missions/${fact.image}`:null,imageAlt:fact.imageAlt||'',imageId:fact.image||null};
     task.payload=payloadFor(task);task.questionHash=hash(`${normalizeWorldQuestion(task.question)}|${normalizeWorldQuestion(task.answer)}`);task.conceptFingerprint=hash(conceptKey);task.signature=[taskKey,task.answer,...task.answers.filter(item=>item!==task.answer).sort()].join('|');return Object.freeze(task)
   }
   let cachedDeck;
@@ -36,7 +36,7 @@
     return chosen
   }
   function buildAdventurePlan(){
-    const unseen=getUnseenWorldTasks();if(unseen.length===0){const error=new Error('Все уникальные задания курса пройдены');error.code='WORLD_CURRICULUM_COMPLETE';throw error}
+    const allUnseen=getUnseenWorldTasks();if(allUnseen.length===0){const error=new Error('Все уникальные задания курса пройдены');error.code='WORLD_CURRICULUM_COMPLETE';throw error}const missingImages=allUnseen.filter(task=>imageRequiredMechanics.has(task.mechanic)&&!task.image);missingImages.forEach(task=>console.error(`IMAGE REQUIRED FOR MISSION: ${task.taskKey}`));const unseen=allUnseen.filter(task=>!imageRequiredMechanics.has(task.mechanic)||Boolean(task.image));
     const excluded=setFrom('worldLastAdventureTaskKeys'),allocated=setFrom('worldAllocatedTaskKeys'),levels={};
     for(let level=1;level<=4;level+=1){levels[level]=chooseLevelTasks(unseen,level,excluded,allocated);if(levels[level].length!==10){const error=new Error(`Недостаточно непройденных заданий для экспедиции ${level}: ${levels[level].length}/10`);error.code='WORLD_INCOMPLETE_LEVEL_BANK';throw error}}
     const all=Object.values(levels).flat(),keys=all.map(task=>task.taskKey),hashes=all.map(task=>task.questionHash),normalized=all.map(task=>normalizeWorldQuestion(task.question));
@@ -44,7 +44,7 @@
     write('worldLastAdventureTaskKeys',keys);write('worldAllocatedTaskKeys',unique([...allocated,...keys]));
     const fingerprint=hash(keys.join('|')),plan={levels,fingerprint,cycle:Number(localStorage.getItem('worldTaskCycle'))||1,contentVersion:WORLD_CONTENT_VERSION,createdAt:Date.now()};write('worldAdventureFingerprints',unique([...read('worldAdventureFingerprints',[]),fingerprint]).slice(-100));return plan
   }
-  function validateMission(mission){return Boolean(mission?.taskKey&&mission?.conceptKey&&mission?.questionHash&&mission?.question&&mission?.answer&&mission?.explanation&&buildWorldCurriculumDeck().some(task=>task.taskKey===mission.taskKey)&&WORLD_GRADE4_CURRICULUM.mechanics.includes(mission.mechanic))}
+  function validateMission(mission){return Boolean(mission?.taskKey&&mission?.conceptKey&&mission?.questionHash&&mission?.question&&mission?.answer&&mission?.explanation&&(!imageRequiredMechanics.has(mission.mechanic)||mission.image)&&buildWorldCurriculumDeck().some(task=>task.taskKey===mission.taskKey)&&WORLD_GRADE4_CURRICULUM.mechanics.includes(mission.mechanic))}
   function validateAdventurePlan(plan){const all=Object.values(plan?.levels||{}).flat();return plan?.contentVersion===WORLD_CONTENT_VERSION&&all.length===40&&[1,2,3,4].every(level=>plan.levels[level]?.length===10)&&new Set(all.map(task=>task.taskKey)).size===40&&new Set(all.map(task=>task.questionHash)).size===40&&all.every(validateMission)}
   function recordMissionShown(mission){
     const history=loadPersistentWorldHistory(),normalized=normalizeWorldQuestion(mission.question);if(seenBy(mission,history)){console.error('[WORLD DUPLICATE BLOCKED]',mission.taskKey);return false}
