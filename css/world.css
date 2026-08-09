@@ -18,3 +18,12 @@
 @keyframes ceremonyOpen{from{opacity:0;transform:scale(.92)}}@keyframes postcardReveal{from{opacity:0;transform:perspective(800px) rotateY(-25deg) translateY(25px) scale(.75)}70%{transform:perspective(800px) rotateY(7deg) scale(1.04)}to{opacity:1;transform:perspective(800px) rotateY(4deg) scale(1)}}@keyframes medalReveal{from{opacity:0;transform:scale(.4) rotate(-4deg)}70%{opacity:1;transform:scale(1.12) rotate(2deg)}to{opacity:1;transform:scale(1)}}@keyframes medalAura{to{transform:translate(-50%,-50%) rotate(360deg)}}@keyframes rewardRays{to{transform:translate(-50%,-50%) rotate(360deg)}}
 @media(max-width:768px){.intro-title{margin-bottom:100px}.intro-title h2{font-size:clamp(47px,12vw,76px)}.reward-dialog{width:100%;max-height:none;min-height:100dvh;margin:0;border-radius:0}.reward-collectibles{grid-template-columns:1fr}.reward-collectibles img{height:clamp(210px,55vw,300px)}.postcard-prize img{width:min(560px,100%)}.medal-prize img{width:min(270px,75vw)}.album-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:430px){.intro-skip{right:10px;top:10px;min-width:100px}.intro-title{margin-bottom:72px}.intro-title small{font-size:9px}.intro-title h2{font-size:46px}.intro-title p{font-size:20px}.reward-dialog{padding:18px 10px 24px}.reward-dialog h2{font-size:35px}.reward-collectibles{gap:2px}.reward-collectibles img{height:210px}.medal-prize img{height:220px}.reward-collectibles strong{font-size:14px}.reward-stats{gap:6px}}
+
+/* Mission artwork is optional: atlas pages are shown only for map-based tasks. */
+.mission-card.no-art{grid-template-columns:1fr;width:min(920px,100%);margin-inline:auto}
+.mission-art[hidden]{display:none}
+.mission-content .mechanic-label{position:static;align-self:flex-start;margin-bottom:12px}
+.cycle-dialog{background:radial-gradient(circle at 50% 20%,rgba(99,238,211,.34),transparent 36%),linear-gradient(145deg,#092c55,#203a73 52%,#431b68)}
+.cycle-dialog .cycle-stars{margin:0;color:#ffe799;font-size:42px;letter-spacing:.3em;text-shadow:0 0 20px #66e8ff}
+.cycle-dialog p{font-size:17px;line-height:1.55}
+.cycle-dialog .world-button{margin:8px 5px}
